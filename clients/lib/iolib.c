@@ -11,7 +11,7 @@ char *rcs_iolib="$Id: iolib.c,v 1.4 1994/04/25 20:11:23 celes Exp $";
 #include <ctype.h>
 #include <sys/stat.h>
 #ifdef __GNUC__
-#include <floatingpoint.h>
+//#include <floatingpoint.h>
 #endif
 
 #include "mm.h"
