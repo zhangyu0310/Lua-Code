@@ -106,7 +106,6 @@ int lua_findsymbol (char *s)
     l->next = searchlist;
     searchlist = l;
    }
-   printf("\n");
    return (l->s-lua_table);
   }
 
