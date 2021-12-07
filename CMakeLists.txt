@@ -1,31 +1,38 @@
-project(lua_3.0)
+project(lua_3.1)
 cmake_minimum_required(VERSION 2.18)
 
 include_directories(.)
 
-add_library(lualib fallback.c
-                   func.c
-                   hash.c
-                   inout.c
-                   lex.c
-                   luamem.c
-                   opcode.c
-                   parser.c
-                   table.c
-                   tree.c
-                   undump.c
-                   zio.c)
+add_library(lualib lapi.c
+                   lbuffer.c
+                   lbuiltin.c
+                   ldo.c
+                   lfunc.c
+                   lgc.c
+                   llex.c
+                   lmem.c
+                   lobject.c
+                   lparser.c
+                   lstate.c
+                   lstring.c
+                   ltable.c
+                   ltm.c
+                   lundump.c
+                   lvm.c
+                   lzio.c)
 
 add_executable(lua lua.c
-                   iolib.c
-                   mathlib.c
-                   strlib.c
-                   auxlib.c)
+                   lauxlib.c
+                   liolib.c
+                   lmathlib.c
+                   lstrlib.c)
 
 add_executable(luac luac.c
-                    print.c
                     dump.c
-                    auxlib.c)
+                    opcode.c
+                    opt.c
+                    print.c
+                    lauxlib.c)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # using GCC
