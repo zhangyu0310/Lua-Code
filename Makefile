@@ -1,11 +1,17 @@
-# makefile for lua hierarchy
+OBJS= fallback.o hash.o inout.o lex.o mem.o opcode.o parser.o table.o tree.o lua.o iolib.o mathlib.o strlib.o
 
-all:
-	(cd src; make)
-	(cd clients/lib; make)
-	(cd clients/lua; make)
+CFLAGS= -Wall -O2 -I.
+
+T= lua
+
+all:	$T
+	./$T test.lua
+
+$T:	$(OBJS)
+	$(CC) -o $@ $(OBJS) -lm
 
 clean:
-	(cd src; make clean)
-	(cd clients/lib; make clean)
-	(cd clients/lua; make clean)
+	rm -f $T $(OBJS) core core.*
+
+diff:
+	diff ORIG . | grep -v ^Only > DIFFS
