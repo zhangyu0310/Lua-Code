@@ -1,4 +1,4 @@
-project(lua_2.5)
+project(lua_2.5.1)
 cmake_minimum_required(VERSION 2.18)
 
 include_directories(.)
