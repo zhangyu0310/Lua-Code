@@ -14,6 +14,7 @@
 void lua_iolibopen   (void);
 void lua_strlibopen  (void);
 void lua_mathlibopen (void);
+void lua_jsonlibopen (void);
 
 
 

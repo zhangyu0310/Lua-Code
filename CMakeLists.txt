@@ -1,7 +1,8 @@
 project(lua_3.1)
 cmake_minimum_required(VERSION 2.18)
 
-include_directories(.)
+include_directories(.
+                    ../cJSON)
 
 add_library(lualib lapi.c
                    lbuffer.c
@@ -19,7 +20,8 @@ add_library(lualib lapi.c
                    ltm.c
                    lundump.c
                    lvm.c
-                   lzio.c)
+                   lzio.c
+                   ljsonlib.c)
 
 add_executable(lua lua.c
                    lauxlib.c
@@ -42,5 +44,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
 
-target_link_libraries(lua lualib)
-target_link_libraries(luac lualib)
+target_link_libraries(lua lualib cjson)
+target_link_libraries(luac lualib cjson)
+
+add_subdirectory(cJSON)

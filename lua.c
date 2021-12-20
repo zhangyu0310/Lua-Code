@@ -133,6 +133,7 @@ int main (int argc, char *argv[])
   lua_iolibopen();
   lua_strlibopen();
   lua_mathlibopen();
+  lua_jsonlibopen();
   lua_pushstring("> "); lua_setglobal("_PROMPT");
   if (argc < 2) {  /* no arguments? */
     if (isatty(0)) {
