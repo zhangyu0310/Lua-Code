@@ -37,3 +37,8 @@ cmake-build-debug
 
 # CMake Build Dir
 build
+
+# VS Files
+.vs
+out
+CMakeSettings.json

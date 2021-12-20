@@ -4,6 +4,20 @@ cmake_minimum_required(VERSION 2.18)
 include_directories(.
                     ../cJSON)
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  # using GCC
+  SET(CXX_FLAGS )
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
+  SET(CXX_FLAGS
+                /Od
+                /D "WIN32"
+                /D "_DEBUG"
+                /ZI
+                /MTd
+                /DEBUG)
+endif()
+
 add_library(lualib lapi.c
                    lbuffer.c
                    lbuiltin.c
