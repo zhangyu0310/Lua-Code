@@ -1,4 +1,4 @@
-project(lua_3.1)
+project(lua_3.2.2)
 cmake_minimum_required(VERSION 2.18)
 
 include_directories(.
@@ -34,20 +34,23 @@ add_library(lualib lapi.c
                    ltm.c
                    lundump.c
                    lvm.c
-                   lzio.c
-                   ljsonlib.c)
+                   lzio.c)
 
 add_executable(lua lua.c
                    lauxlib.c
+                   ldblib.c
                    liolib.c
                    lmathlib.c
-                   lstrlib.c)
+                   lstrlib.c
+                   ljsonlib.c
+                   linit.c)
 
 add_executable(luac luac.c
                     dump.c
                     opcode.c
                     opt.c
                     print.c
+                    test.c
                     lauxlib.c)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
