@@ -1,4 +1,4 @@
-project(lua_3.2.2)
+project(lua_4.0.1)
 cmake_minimum_required(VERSION 2.18)
 
 include_directories(.
@@ -19,9 +19,9 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 endif()
 
 add_library(lualib lapi.c
-                   lbuffer.c
-                   lbuiltin.c
+                   lcode.c
                    ldo.c
+                   ldebug.c
                    lfunc.c
                    lgc.c
                    llex.c
@@ -38,19 +38,17 @@ add_library(lualib lapi.c
 
 add_executable(lua lua.c
                    lauxlib.c
+                   lbaselib.c
                    ldblib.c
                    liolib.c
                    lmathlib.c
                    lstrlib.c
-                   ljsonlib.c
-                   linit.c)
+                   ljsonlib.c)
 
 add_executable(luac luac.c
                     dump.c
-                    opcode.c
                     opt.c
                     print.c
-                    test.c
                     lauxlib.c)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

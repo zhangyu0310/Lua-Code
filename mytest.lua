@@ -16,3 +16,5 @@ mytable["num"]=1
 mytable["table"]["xx"]="Lua"
 mytable["table"]["num"]=2
 printtable(mytable)
+
+listtables()

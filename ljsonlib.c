@@ -11,83 +11,73 @@
 
 #include <cJSON.h>
 
-static void json_parse (void)
+static int json_parse(lua_State* L)
 {
-  char* str = luaL_check_string(1);
+  char* str = lua_tostring(L, 1);
   cJSON* json = cJSON_Parse(str);
-  lua_pushuserdata(json);
+  lua_pushuserdata(L, json);
+  return 1;
 }
 
-static void json_print (void)
+static int json_print(lua_State* L)
 {
-  lua_Object obj = lua_getparam(1);
-  void* u = lua_getuserdata(obj);
+  void* u = lua_touserdata(L, 1);
   if (u != NULL)
   {
     cJSON* json = (cJSON*)u;
     if (json == NULL) return;
     printf("%s\n", cJSON_Print(json));
   }
+  return 0;
 }
 
-static void json_get(void)
+static int json_get(lua_State* L)
 {
   // Get param 1 --- json
-  lua_Object j = lua_getparam(1);
-  void* u = lua_getuserdata(j);
+  void* u = lua_touserdata(L, 1);
   // Get param 2 --- id
-  lua_Object id = lua_getparam(2);
-  double id_num = -1;
-  char* id_str = NULL;
-  if (lua_isnumber(id))
-  {
-    id_num = lua_getnumber(id);
-  }
-  else if (lua_isstring(id))
-  {
-    id_str = lua_getstring(id);
-  }
-
+  char* id_str = lua_tostring(L, 2);
   if (u != NULL)
   {
     cJSON* json = (cJSON*)u;
-    if (json == NULL) return;
+    if (json == NULL) return 0;
     cJSON* find = NULL;
     if (cJSON_IsObject(json))
     {
-      if (id_str == NULL) return;
+      if (id_str == NULL) return 0;
       find = cJSON_GetObjectItem(json, id_str);
     }
     else if (cJSON_IsArray(json))
     {
-      find = cJSON_GetArrayItem(json, id_num);
+      find = cJSON_GetArrayItem(json, atoi(id_str));
     }
-    if (find == NULL) return;
+    if (find == NULL) return 0;
     switch (find->type & 0xFF)
     {
     case cJSON_NULL:
     case cJSON_False:
-      lua_pushnil();
+      lua_pushnil(L);
       break;
     case cJSON_True:
-      lua_pushnumber(1);
+      lua_pushnumber(L, 1);
       break;
     case cJSON_Number:
-      lua_pushnumber(cJSON_GetNumberValue(find));
+      lua_pushnumber(L, cJSON_GetNumberValue(find));
       break;
     case cJSON_String:
-      lua_pushstring(cJSON_GetStringValue(find));
+      lua_pushstring(L, cJSON_GetStringValue(find));
       break;
     case cJSON_Array:
     case cJSON_Object:
     case cJSON_Raw:
-      lua_pushuserdata(find);
+      lua_pushuserdata(L, find);
       break;
     case cJSON_Invalid:
     default:
-      return;
+      return 0;
     }
   }
+  return 1;
 }
 
 static struct luaL_reg jsonlib[] = {
@@ -96,7 +86,7 @@ static struct luaL_reg jsonlib[] = {
 {"json_get",   json_get},
 };
 
-void lua_jsonlibopen (void)
+LUALIB_API void lua_jsonlibopen(lua_State* L)
 {
-  luaL_openlib(jsonlib, (sizeof(jsonlib)/sizeof(jsonlib[0])));
+  luaL_openlib(L, jsonlib, (sizeof(jsonlib)/sizeof(jsonlib[0])));
 }
